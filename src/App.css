@@ -1,10 +1,110 @@
 
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(250, 247, 247);
+}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.weatherContainer {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  margin-top: 30px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+.active {
+  background-color: rgb(237, 237, 237);
+  font-weight: bold;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+#logo {
+  width: 100px;
+  height: 80px;
+  background-color: green;
+}
+
+.dayOfWeek {
+  display: flex;
+  flex:1;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.tempForDay {
+  display: flex;
+  flex: 3;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}
+
+#zipInput {
+  border-radius: 4px;
+}
+
+#zipLabel {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.inputContainer {
+  margin-bottom: 10px;
+}
+
+.widgetContainer {
+  border-radius: 20px;
+  opacity: 0.99;
+  width: 500px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.datesContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+}
+
+.forecast-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+}
+
+.forecast-item:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.cityLabel {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.iconContainer {
+  display: flex;
+  flex: 3;
+  justify-content: center;
+  align-items: center;
+}
+
+.location {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
