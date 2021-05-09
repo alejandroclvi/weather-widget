@@ -4,22 +4,19 @@ import moment from 'moment';
 
 const ZIP_CODE_LENGTH = 5;
 
-function Widget() {
-  const [zipCode, setZipcode] = useState('');
+function Widget({zipCode}: any) {
+  const [isLoading, setLoader] = useState(false)
   const [city, setCity] = useState('');
   const [weatherData, setWeatherData] = useState<any>([]);
   const [activeForecast, setActiveForecast] = useState('');
   const [weatherIconURL, setWeatherIconURL] = useState('');
   const [error, setError] = useState<string|null>(null);
 
-  function handleZipChange(ev: React.ChangeEvent<HTMLInputElement>) {
-    ev.preventDefault();
-    setZipcode(ev.target.value);
-  }
-
   useEffect(() => {
     async function getWeatherData(zipCode: String) {
       try {
+        setLoader(true);
+        setWeatherData([]);
         const data: any =  await fetch(`https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&exclude=hourly,minutely,alerts,current&units=imperial&appid=b08abc60f5222977c05dc54b137b2d17`);
         const forecastDict: any = {};
         const forecast = await data.json()
@@ -32,13 +29,15 @@ function Widget() {
         setActiveForecast(defaultForecast);
         setWeatherIconURL(`http://openweathermap.org/img/wn/${forecastDict[defaultForecast].weather[0].icon}@2x.png`);
         setError(null);
+        setLoader(false);
       } catch (error) {
         setWeatherData([])
+        setLoader(false);
         setError('The zipcode provided is not being recognized. ');
       }
     }
     if(zipCode.length !== ZIP_CODE_LENGTH) {
-      
+      setWeatherData([]);
     } else {
       getWeatherData(zipCode)
     }
@@ -53,13 +52,11 @@ function Widget() {
 
   return (
     <div className='widgetContainer'>
-      <div className="wrapper">
-        <div className='inputContainer'>
-          <span id="zipLabel">ZIP</span>
-          <input id="zipInput" type='text' maxLength={ZIP_CODE_LENGTH} value={zipCode} onChange={(ev) => handleZipChange(ev)}/>
-        </div>
         {
           error ? <span>{error}</span> : null
+        }
+        {
+          isLoading ? 'Getting your data....' : null
         }
         { Object.values(weatherData).length > 0 ?
           <div className='weatherContainer'>
@@ -83,17 +80,28 @@ function Widget() {
           </div>
         </div>
         : 
-        <span>Enter a valid zipcode to obtain meteorological data.</span>
+        isLoading ? null : <span>Enter a valid zipcode to obtain meteorological data.</span>
         }
-      </div>
     </div>
   );
 }
 
 function App() {
+  const [zipCode, setZipcode] = useState('');
+  function handleZipChange(ev: React.ChangeEvent<HTMLInputElement>) {
+    ev.preventDefault();
+    setZipcode(ev.target.value);
+  }
+
   return (
     <div className='container'>
-      <Widget />
+      <div className="wrapper">
+        <div className='inputContainer'>
+          <span id="zipLabel">ZIP</span>
+          <input id="zipInput" type='text' maxLength={ZIP_CODE_LENGTH} value={zipCode} onChange={(ev) => handleZipChange(ev)}/>
+        </div>
+        <Widget zipCode={zipCode}/>
+      </div>
     </div>
   );
 }
