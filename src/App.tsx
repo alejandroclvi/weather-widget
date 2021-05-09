@@ -33,6 +33,7 @@ function Widget() {
         setWeatherIconURL(`http://openweathermap.org/img/wn/${forecastDict[defaultForecast].weather[0].icon}@2x.png`);
         setError(null);
       } catch (error) {
+        setWeatherData([])
         setError('The zipcode provided is not being recognized. ');
       }
     }
@@ -55,7 +56,7 @@ function Widget() {
       <div className="wrapper">
         <div className='inputContainer'>
           <span id="zipLabel">ZIP</span>
-          <input id="zipInput" type='numeric' maxLength={ZIP_CODE_LENGTH} value={zipCode} onChange={(ev) => handleZipChange(ev)}/>
+          <input id="zipInput" type='text' maxLength={ZIP_CODE_LENGTH} value={zipCode} onChange={(ev) => handleZipChange(ev)}/>
         </div>
         {
           error ? <span>{error}</span> : null
@@ -73,7 +74,7 @@ function Widget() {
               Object.values(weatherData).map(({dt, main} : any) => {
                 return (
                   <div onClick={() => setActiveForecast(moment.unix(dt).format('ddd'))} key={dt} className={`forecast-item ${moment.unix(dt).format('ddd') === activeForecast ? 'active' : null}`}>
-                    <span className='dayOfWeek'>{moment.unix(dt).format('ddd')}</span>
+                    <span className='dayOfWeek'>{moment.unix(dt).format('ddd').toUpperCase()}</span>
                     <span className='tempForDay'>{parseInt(main.temp)}</span>
                   </div>
                 )
